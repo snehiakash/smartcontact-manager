@@ -14,6 +14,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="USER")
@@ -22,6 +24,9 @@ public class User {
 @Id	
 @GeneratedValue(strategy= GenerationType.AUTO)
 private int id;
+
+@NotBlank(message="Name Field is Required !!")
+@Size(min=2,max=20,message="min 2 and max 20 characters are Allowed!!")
 private String name;
 @Column(unique=true)
 private String email;
@@ -110,6 +115,12 @@ public List<Contact> getContacts() {
 
 public void setContacts(List<Contact> contacts) {
 	this.contacts = contacts;
+}
+
+@Override
+public String toString() {
+	return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
+			+ ", enabled=" + enabled + ", imageUrl=" + imageUrl + ", about=" + about + ", contacts=" + contacts + "]";
 }
 
 

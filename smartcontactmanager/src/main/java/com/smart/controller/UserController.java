@@ -74,20 +74,21 @@ public class UserController {
 	
 	//open add form Handler
 	@GetMapping("/add-contact")
-	public String openAddContactForm(Model model, HttpServletRequest request) {
-		
-		model.addAttribute("title","Add Contact");
-		model.addAttribute("contact",new Contact());
-		 model.addAttribute("session", request.getSession());
-		return "normal/add_contact_form";
+	public String openAddContactForm(Model model) {
+	    model.addAttribute("title", "Add Contact");
+	    model.addAttribute("contact", new Contact());
+
+	   
+
+	    return "normal/add_contact_form";
 	}
-	
+
 	//Processing Add Contact Form
 	
 	@PostMapping("/process-contact")
 	public String processContact(@ModelAttribute Contact contact,
 			@RequestParam("profileImage") MultipartFile file,
-			Principal principal,HttpSession session ) {
+			Principal principal,Model model,HttpSession session ) {
 		try{
 		String name=principal.getName();
 		User user=this.userRepository.getUserByUserName(name);
@@ -97,6 +98,7 @@ public class UserController {
 		{
 			//if the file is empty then try our message.
 			System.out.println("File is Empty");
+			
 		}
 		else {
 			//file the file to folder and update the name to contact
@@ -108,18 +110,30 @@ public class UserController {
 			
 		}
 		contact.setUser(user);
+		
 		user.getContacts().add(contact);
+		
 		this.userRepository.save(user);
+		
 		System.out.println("DATA"+ contact);
+		
 		System.out.println("Added to DataBase");
+		
 		//Success Message.... 
-		session.setAttribute("message",new Message("Your Contact is added !!  Add More...","success"));
+		
+		
+		  
+    session.setAttribute("message",new Message("Your Contact is added !!  Add More...","success"));
+		 
+		
 		
 		}catch(Exception e){
 			System.out.println("ERROR"+e.getMessage());
 			e.printStackTrace();
 			//Error Message...
-			session.setAttribute("message",new Message("Something Went Wrong !! Try Again...","danger"));
+			
+	session.setAttribute("message",new Message("Something Went Wrong !! Try Again...","danger"));
+			 
 		}
 		return "normal/add_contact_form";
 	}

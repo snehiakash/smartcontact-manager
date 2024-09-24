@@ -66,10 +66,10 @@
    <div th:classappend="${'alert-' + session.message.type}" class="alert text-center" role="alert">
    <span th:text="${session.message.content}"></span>
    </div>
-   <th:block th:text="${#session.removeAttribute('message')}"> </th:block>
+   <th:block th:text="${@SessionHelper.removeMessageFromSession()}"> </th:block>
    
-  </div>
-  
+  </div> 
+ 
   <div th:replace="${content}"></div>
 </div>
 <!-- End of Content area -->
